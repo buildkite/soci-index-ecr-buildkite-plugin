@@ -1,0 +1,10 @@
+name: soci-index-ecr
+description: Generate and push a SOCI index to ECR 
+author: https://github.com/buildkite
+requirements:
+  - aws
+configuration:
+  properties:
+    image:
+      type: string
+  additionalProperties: false

@@ -1,0 +1,26 @@
+#!/bin/bash
+
+set -e
+
+echo "--- :docker: Building SOCI index"
+
+#IMAGE="445615400570.dkr.ecr.us-east-1.amazonaws.com/buildkite:${BUILDKITE_PIPELINE_SLUG}-app-build-${BUILDKITE_BUILD_NUMBER}"
+#
+## CLone the https://github.com/CloudSnorkel/standalone-soci-indexer
+#git clone --branch v1.0.1 https://github.com/CloudSnorkel/standalone-soci-indexer.git
+#
+## use docker with golang image to build a binary
+#docker run --rm -v "$PWD/standalone-soci-indexer":/workdir -w /workdir -e GOFLAGS="-buildvcs=false" golang:1.22 bash -c "apt update && apt install -y zlib1g-dev && go build -o standalone-soci-indexer ."
+#
+## ./standalone-soci-indexer $IMAGE
+#./standalone-soci-indexer/standalone-soci-indexer $IMAGE
+
+IMAGE="$BUILDKITE_PLUGIN_SOCI_INDEX_ECR_IMAGE"
+
+if [ -z "$IMAGE" ]; then
+  echo "WARNING: plugin `image` parameter not set"
+  exit 1
+fi
+
+# wget the binary
+./standalone-soci-indexer $IMAGE
